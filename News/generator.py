@@ -1,10 +1,12 @@
 import tensorflow as tf;
 import nltk;
 import re;
+import io;
 from nltk.tokenize import RegexpTokenizer;
 from nltk.stem.snowball import SnowballStemmer;
 import math;
 from googletrans import Translator
+from google_images_search import GoogleImagesSearch
 
 class Generator:
     model = None;
@@ -12,6 +14,7 @@ class Generator:
     names = None;
     translator = None;
     stemmer = None;
+    gis = None;
     
     def __init__(self):
        self.real_words = set(nltk.corpus.words.words() );
@@ -19,12 +22,14 @@ class Generator:
        self.stemmer = SnowballStemmer(language="english")
        self.model = tf.saved_model.load('one_step')
        self.translator = Translator();
+       self.gis = GoogleImagesSearch('AIzaSyBohnBtAzlJ07U2jM5-POXuMD7Xw9wWAQU', 'f23c4ea05cbfb47f2');
        
     def getNews(self, charsLenght: int, words = ''):
         text = self.generateBy(words, charsLenght);
         article = self.getArticle(text);
         keys = self.getKeyWords(text)
-        return {'text': text, 'article':article, 'keyWords':keys};
+        preview = self.findImg(article);
+        return {'text': text, 'article':article, 'keyWords':keys, 'preview':preview};
        
     def generateBy(self, startWords: str, charsLenght: int):
         states = None;
@@ -81,6 +86,13 @@ class Generator:
     def has_numbers(self, inputString):
         return any(char.isdigit() for char in inputString)
     
+    def findImg(self, text: str):
+        self.gis.search({'q':str(text), 'num': 1});
+        bytesData = io.BytesIO();
+        bytesData.seek(0)
+        img = self.gis.results()[0];
+        return img._url;
+    
     def getWords(self, string:str):
         if (string == '.' or string ==','):
             return None;
@@ -101,7 +113,7 @@ class Generator:
         return self.translator.translate(str(text)).text;
 
     def clearSpaces(self, prefab: str):
-        return re.sub('[ ]{2,}', ' ', str(prefab)).replace(' . ', '. ').replace(' , ', ', ');
+        return re.sub('[ ]{2,}', ' ', str(prefab)).replace(' . ', '. ').replace(' , ', ', ').replace('. .', '.');
     
     def print_progress(self, percent: float):
         percent_dat =math.floor(percent/5);
