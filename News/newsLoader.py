@@ -48,8 +48,8 @@ class NewsLoader:
                  content = content.find('img');
                  if(content):
                      return content['src'];
-             else:
-                 return content['src'];
+         else:
+            return content['src'];
          return None;
         
      def parseRandom(self, count: int):
@@ -87,7 +87,3 @@ class NewsLoader:
                             counter+=1;
                             result.append({'article':self.gen.getArticle(text), 'text':text, 'preview':img, 'keyWords':self.gen.getKeyWords(text)})
         return result;
-        
-url = NewsPortalConfig('https://news.yahoo.com/', [r'href=\"\/([\w\d\-\.]*)\"', 'caas-body', 'caas-img has-preview'], True);
-url2 = NewsPortalConfig('https://www.nbcnews.com/', [r'href=\"([\:\.\/\w\-\d]*)\"', 'article-body__content', 'article-hero__main-image'], False);
-print(NewsLoader([url,url2], Generator()).parseRandom(3))

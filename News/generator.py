@@ -98,8 +98,11 @@ class Generator:
         self.gis.search({'q':str(text), 'num': 1});
         bytesData = io.BytesIO();
         bytesData.seek(0)
-        img = self.gis.results()[0];
-        return img._url;
+        if (len(self.gis.results()) > 0):
+            img = self.gis.results()[0]._url;
+        else:
+            img = None;
+        return img;
     
     def getWords(self, string:str):
         if (string == '.' or string ==','):

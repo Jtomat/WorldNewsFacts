@@ -1,5 +1,6 @@
-from flask import request
-from flask import Flask
+from flask import request;
+from flask import Flask;
+from flask import jsonify;
 from generator import Generator;
 from newsLoader import NewsPortalConfig;
 from newsLoader import NewsLoader;
@@ -15,12 +16,12 @@ app = Flask(__name__)
 def gen():
     length = int(request.args.get('len'));
     words = request.args.get('words');
-    return newsGenerator.getNews(length, words)
+    return jsonify(newsGenerator.getNews(length, words));
 
 @app.route('/parse')
 def parse():
     length = int(request.args.get('len'));
-    return loader.parseRandom(length);
+    return jsonify(loader.parseRandom(length));
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=False)
