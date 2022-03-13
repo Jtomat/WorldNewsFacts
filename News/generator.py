@@ -48,7 +48,15 @@ class Generator:
         text = self.clearSpaces(text);
         text = self.removeDublPunct(text);
         text = self.setEndOfSentence(text);
-        text = self.fixGrammar(text);
+        if (len(text)<3000):
+            text = self.fixGrammar(str(text));
+        else:
+            chunks, chunk_size = len(text), 3000;
+            subs = [text[i:i+chunk_size] for i in range(0, chunks, chunk_size)];
+            res = '';
+            for sub in subs:
+                res += self.fixGrammar(str(sub));
+            text = res;
         text = text.replace('trump', 'Trump');
         return text;
     
