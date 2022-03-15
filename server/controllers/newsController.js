@@ -5,7 +5,7 @@ class NewsController {
     async parseNews(req, res) {
         axios.get(`${ process.env.NEWS_GENERATOR_URL }:${ process.env.NEWS_GENERATOR_PORT }/parse`, {
             params: {
-                len: req.query.len
+                len: req.body.len
             }
         }).then((response) => {
             response.data.map((news) => {
@@ -24,8 +24,8 @@ class NewsController {
     async generateNews(req, res) {
         axios.get(`${ process.env.NEWS_GENERATOR_URL }:${ process.env.NEWS_GENERATOR_PORT }/generate`, {
             params: {
-                len: req.query.len,
-                words: req.query.words || null
+                len: req.body.len,
+                words: req.body.words || null
             }
         }).then((response) => {
             News.create({

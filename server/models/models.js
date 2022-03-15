@@ -1,5 +1,5 @@
 const sequelize = require('../db');
-const { DataTypes } = require('sequelize');
+const { DataTypes, BOOLEAN } = require('sequelize');
 
 const User = sequelize.define('user', {
     email: { type: DataTypes.STRING, primaryKey: true },
@@ -17,8 +17,31 @@ const News = sequelize.define('news', {
     legit: { type: DataTypes.BOOLEAN }
 });
 
+const Vote = sequelize.define('vote', {
+    news_id: { type: DataTypes.NUMBER },
+    user_email: {type: DataTypes.STRING},
+    result: { type: DataTypes.BOOLEAN },
+    proofs: {type: DataTypes.STRING}
+})
+
+Vote.belongsTo(News, {
+    foreignKey: 'news_id',
+    as: 'news_fk',
+    onDelete: "CASCADE"
+})
+
+Vote.belongsTo(User, {
+    foreignKey: 'user_email',
+    as: 'user_fk',
+    onDelete: 'CASCADE'
+})
+
+News.hasMany(Vote);
+User.hasMany(User);
+
 
 module.exports = {
     User,
-    News
+    News,
+    Vote
 }
