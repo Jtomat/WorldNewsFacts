@@ -75,7 +75,8 @@ class NewsLoader:
                             img = self.excractImg(portal.url+link, portal.patterns[2])
                             counter+=1
                             if (img == None):
-                                img = self.gen.findImg(self.gen.getArticle(text))
+                                img = 'https://img-9gag-fun.9cache.com/photo/aRrgE7B_460s.jpg'
+                                # img = self.gen.findImg(self.gen.getArticle(text))
                                 counter+=1
                                 result.append({'article':self.gen.getArticle(text), 'text':text, 'preview':img, 'keyWords':self.gen.getKeyWords(text)})
                     else:
@@ -83,7 +84,8 @@ class NewsLoader:
                         if (text):
                             img = self.excractImg(link, portal.patterns[2])
                             if (img == None):
-                                img = self.gen.findImg(self.gen.getArticle(text))
+                                img = 'https://img-9gag-fun.9cache.com/photo/aRrgE7B_460s.jpg'
+                                # img = self.gen.findImg(self.gen.getArticle(text))
                             counter+=1
                             result.append({'article':self.gen.getArticle(text), 'text':text, 'preview':img, 'keyWords':self.gen.getKeyWords(text)})
         return result
