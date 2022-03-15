@@ -49,7 +49,7 @@ class UserController {
     }
 
     async updateCredentials(req, res) {
-        const { email, name, rating } = req.body;
+        const { email, name , password} = req.body;
 
         let user = await User.findByPk(req.user.email);
 
@@ -66,8 +66,9 @@ class UserController {
             user.name = name;
         }
 
-        if (rating) {
-            user.rating = rating;
+        const hashPassword = await bcrypt.hash(password, 5);
+        if (password) {
+            user.password = hashPassword;
         }
 
         await user.save();

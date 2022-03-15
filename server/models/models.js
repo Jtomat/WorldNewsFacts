@@ -5,7 +5,8 @@ const User = sequelize.define('user', {
     email: { type: DataTypes.STRING, primaryKey: true },
     name: { type: DataTypes.STRING },
     password: { type: DataTypes.STRING },
-    rating: { type: DataTypes.FLOAT },
+    correct: { type: DataTypes.INTEGER },
+    votes: { type: DataTypes.INTEGER },
     admin: { type: DataTypes.BOOLEAN }
 });
 
@@ -19,9 +20,9 @@ const News = sequelize.define('news', {
 
 const Vote = sequelize.define('vote', {
     news_id: { type: DataTypes.INTEGER },
-    user_email: {type: DataTypes.STRING},
+    user_email: { type: DataTypes.STRING },
     result: { type: DataTypes.BOOLEAN },
-    proofs: {type: DataTypes.STRING}
+    proofs: { type: DataTypes.STRING }
 })
 
 Vote.belongsTo(News, {

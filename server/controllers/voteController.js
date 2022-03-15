@@ -1,22 +1,31 @@
-const { Vote } = require("../models/models");
+const { Vote, User, News } = require("../models/models");
+const { where } = require("sequelize");
 
 class VoteController {
     async votesForUser(req, res) {
-        const { user, result } = req.body;
-        const votes = Vote.findAll({
-            where: { user_email: user, result }
+        const { user, result } = req.query;
+        const votes = await Vote.findAll({
+            where: result ? { user_email: user, result } : { user_email: user }
         });
         return res.json(votes);
     }
 
     async votesForNews(req, res) {
         // specify the news, the result, if there is proof attached in the query. The news param is required, others are optional
-        const { news, result, user } = req.body;
-        const votes = Vote.findAll({
-            where: { user_email: user, result, news }
+        const { news, result, user } = req.query;
+        let where = {
+            news_id: news
+        };
+        if (result) {
+            where.result = result;
+        }
+        if (user) {
+            where.user_email = user;
+        }
+        const votes = await Vote.findAll({
+            where
         });
         return res.json(votes);
-
     }
 
     async voteById(req, res) {
@@ -28,7 +37,25 @@ class VoteController {
 
     async newVote(req, res) {
         const { user, result, proof, news } = req.body;
-        const vote = await Vote.create({ user_email: user, result, proof, news });
+        const vote = await Vote.create({ user_email: user, result, proof, news_id: news });
+
+        const userInstance = await User.findByPk(user);
+        await User.update({ votes: userInstance.votes + 1 }, {
+            where: {
+                email: user
+            }
+        });
+
+        const newsInstance = await News.findByPk(news);
+
+        if (result === newsInstance.legit) {
+            await User.update({ correct: userInstance.correct + 1 }, {
+                where: {
+                    email: user
+                }
+            });
+        }
+
         return res.json(vote);
     }
 
