@@ -18,7 +18,7 @@ class NewsController {
                 });
             });
         });
-        return res.status(201);
+        return res.status(201).send('OK');
     }
 
     async generateNews(req, res) {
@@ -36,7 +36,7 @@ class NewsController {
                 legit: false
             });
         });
-        return res.status(201);
+        return res.status(201).send('OK');
     }
 
     async removeNews(req, res) {
