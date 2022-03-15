@@ -5,7 +5,7 @@ const User = sequelize.define('user', {
     email: { type: DataTypes.STRING, primaryKey: true },
     name: { type: DataTypes.STRING },
     password: { type: DataTypes.STRING },
-    rating: { type: DataTypes.NUMBER },
+    rating: { type: DataTypes.FLOAT },
     admin: { type: DataTypes.BOOLEAN }
 });
 
@@ -18,7 +18,7 @@ const News = sequelize.define('news', {
 });
 
 const Vote = sequelize.define('vote', {
-    news_id: { type: DataTypes.NUMBER },
+    news_id: { type: DataTypes.INTEGER },
     user_email: {type: DataTypes.STRING},
     result: { type: DataTypes.BOOLEAN },
     proofs: {type: DataTypes.STRING}

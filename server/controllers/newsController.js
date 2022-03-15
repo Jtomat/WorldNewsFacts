@@ -3,7 +3,7 @@ const axios = require('axios');
 
 class NewsController {
     async parseNews(req, res) {
-        axios.get(`${ process.env.NEWS_GENERATOR_URL }:${ process.env.NEWS_GENERATOR_PORT }/parse`, {
+        axios.get(`http://${ process.env.NEWS_GENERATOR_URL }:${ process.env.NEWS_GENERATOR_PORT }/parse`, {
             params: {
                 len: req.body.len
             }
