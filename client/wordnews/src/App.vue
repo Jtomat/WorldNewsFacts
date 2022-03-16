@@ -14,47 +14,52 @@
           transition="scale-transition"
           width="40"
         />
+      <v-toolbar-title>Word News</v-toolbar-title>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
       </div>
 
       <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <template v-if="user.status.loggedIn">
+            <v-btn text @click="signOut()">Log Out</v-btn>
+          </template>
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <div v-if="alert.message" :class="`alert ${alert.type}`">{{alert.message}}</div>
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
 
 export default {
   name: 'App',
 
-  components: {
-    HelloWorld,
-  },
-
   data: () => ({
     //
   }),
+  computed: {
+    alert () {
+      return this.$store.state.alert
+    },
+    user () {
+      return this.$store.state.authentication;
+    },
+    users () {
+      return this.$store.state.users.all;
+    }
+  },
+  watch:{
+    $route (){
+      // clear alert on location change
+      this.$store.dispatch('alert/clear');
+    }
+  },
+  methods: {
+    signOut () {
+      this.$store.dispatch('authentication/logout');
+    }
+  }
 };
 </script>
