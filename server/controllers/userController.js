@@ -92,10 +92,11 @@ class UserController {
     }
 
     async findUserById(req, res) {
-        const id = req.query.name;
+        // don't mind, name = email for now
+        const name = req.query.name;
 
         const users = await User.findOne({
-            where: { name: id }
+            where: { email: id }
         });
         return res.json(users);
     }

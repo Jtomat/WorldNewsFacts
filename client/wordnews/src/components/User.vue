@@ -21,11 +21,10 @@ export default {
   mounted() {
     const requestOptions = {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      params: JSON.stringify({ name: this.$route.params.id })
+      headers: { 'Content-Type': 'application/json' }
     };
 
-    fetch(`http://localhost:5001/api/user/userById`, requestOptions)
+    fetch(`http://localhost:5001/api/user/userById?name=${this.$route.params.id}`, requestOptions)
         .then((resp) => {
           console.log(`${ config.apiUrl }/user/userById`);
           this.user = resp.json();
