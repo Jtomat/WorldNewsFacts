@@ -96,7 +96,7 @@ class UserController {
         const name = req.query.name;
 
         const users = await User.findOne({
-            where: { email: id }
+            where: { email: name }
         });
         return res.json(users);
     }
