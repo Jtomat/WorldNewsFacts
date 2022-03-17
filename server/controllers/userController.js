@@ -49,7 +49,7 @@ class UserController {
     }
 
     async updateCredentials(req, res) {
-        const { email, name , password} = req.body;
+        const { email, name, password } = req.body;
 
         let user = await User.findByPk(req.user.email);
 
@@ -92,9 +92,11 @@ class UserController {
     }
 
     async findUserById(req, res) {
-        const id = req.query.email;
+        const id = req.query.name;
 
-        const users = await User.findByPk(id);
+        const users = await User.findOne({
+            where: { name: id }
+        });
         return res.json(users);
     }
 }

@@ -20,6 +20,7 @@
 
       <v-spacer></v-spacer>
       <template v-if="user.status.loggedIn">
+        <v-btn text :href="'/user/' + userName">{{ userName }}</v-btn>
             <v-btn text @click="signOut()">Log Out</v-btn>
           </template>
     </v-app-bar>
@@ -48,6 +49,9 @@ export default {
     },
     users () {
       return this.$store.state.users.all;
+    },
+    userName() {
+      return JSON.parse(localStorage.getItem('user')).name;
     }
   },
   watch:{
