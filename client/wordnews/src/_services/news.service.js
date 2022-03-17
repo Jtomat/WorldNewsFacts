@@ -11,7 +11,7 @@ export const newsService = {
 function getAll() {
     const requestOptions = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: authHeader(),
     };
 
     return fetch(`${config.apiUrl}/news/getAllNews`, requestOptions)
