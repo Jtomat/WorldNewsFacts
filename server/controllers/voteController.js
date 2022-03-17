@@ -39,10 +39,10 @@ class VoteController {
         const { user, result, proof, news } = req.body;
         const vote = await Vote.create({ user_email: user, result, proof, news_id: news });
 
-        const userInstance = await User.findByPk(user);
+        const userInstance = await User.findOne({ where: { name: user });
         await User.update({ votes: userInstance.votes + 1 }, {
             where: {
-                email: user
+                name: user
             }
         });
 
@@ -59,13 +59,17 @@ class VoteController {
         return res.json(vote);
     }
 
-    async deleteVote(req, res) {
-        const { id } = req.body;
+        async
+        deleteVote(req, res)
+        {
+            const { id } = req.body;
 
-        const vote = await Vote.findByPk(id);
-        await vote.destroy();
-        return id;
+            const vote = await Vote.findByPk(id);
+            await vote.destroy();
+            return id;
+        }
     }
-}
 
-module.exports = new VoteController();
+    module
+.
+    exports = new VoteController();
