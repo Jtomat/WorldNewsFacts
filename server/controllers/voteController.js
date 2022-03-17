@@ -39,10 +39,10 @@ class VoteController {
         const { user, result, proof, news } = req.body;
         const vote = await Vote.create({ user_email: user, result, proof, news_id: news });
 
-        const userInstance = await User.findOne({ where: { name: user }});
+        const userInstance = await User.findOne({ where: { email: user }});
         await User.update({ votes: userInstance.votes + 1 }, {
             where: {
-                name: user
+                email: user
             }
         });
 
