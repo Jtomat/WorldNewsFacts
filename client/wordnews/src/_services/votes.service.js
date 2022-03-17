@@ -11,7 +11,7 @@ function vote(name, result, proof, news) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({name, result, proof, news})
+        body: JSON.stringify({user: name, result, proof, news})
     };
 
     return fetch(`${config.apiUrl}/vote/newVote`, requestOptions)
