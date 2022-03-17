@@ -1,16 +1,7 @@
 <template>
   <v-container>
     <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-            :src="require('../assets/logo.svg')"
-            class="my-3"
-            contain
-            height="200"
-        />
-      </v-col>
-
-      <v-col class="mb-4">
+      <v-col class="mb-1">
         <h1 class="display-2 font-weight-bold mb-3">
           Welcome to WorldNews
         </h1>
@@ -26,12 +17,14 @@
           class="mb-5"
           cols="12"
       >
-        <h2 class="headline font-weight-bold mb-3">
-          Great News!
-        </h2>
-
-        <v-card v-for="item in news.slice(0, amount)" :key="item.article" class="mx-auto" outlined>
-          <v-list-item three-line>
+        <v-card
+          v-for="item in news.slice(0, amount)" 
+          :key="item.article" 
+          elevation="2"
+          outlined
+          class="mx-auto"
+          style="margin-top: 20px;">
+          <v-list-item three-line >
             <v-list-item-content>
               <div class="text-overline mb-4">
                 {{ getKeyWords(item.keyWords) }}
@@ -67,7 +60,7 @@
             rounded
             text
             class="mt-4"
-            @click="amount += 5"
+            @click="gotoNews()"
             v-if="amount < news.length"
         >
           Get more news
@@ -84,7 +77,7 @@ export default {
 
   data() {
     return {
-      amount: 5
+      amount: 3
     }
   },
 
@@ -93,13 +86,15 @@ export default {
   },
 
   methods: {
-
     getKeyWords(word) {
       let outism = '';
       word.map((el) => {
         outism += el + ', ';
       })
       return outism.substring(0, outism.length - 2)
+    },
+    gotoNews() {
+      this.$router.push('/news');
     }
   },
 
