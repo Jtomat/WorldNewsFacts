@@ -20,7 +20,7 @@ class Generator:
        self.real_words = set(nltk.corpus.words.words() )
        self.names = set(nltk.corpus.names.words())
        self.stemmer = SnowballStemmer(language="english")
-       self.model = tf.saved_model.load('one_step')
+       self.model = tf.saved_model.load('C:\\Users\\kosro\\Documents\\GitHub\\WordNews\\News\\one_step')
        self.translator = Translator()
        self.gis = GoogleImagesSearch('AIzaSyBohnBtAzlJ07U2jM5-POXuMD7Xw9wWAQU', 'f23c4ea05cbfb47f2')
        
