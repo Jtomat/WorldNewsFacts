@@ -1,14 +1,12 @@
 <template>
   <v-container>
-    {{ user }}
+    Votes: {{ user.votes || "0" }} <br>
+    Correct: {{ user.correct || "0" }} <br>
+    Percentage: {{ user.correct / user.votes || "0" }}
   </v-container>
 </template>
 
 <script>
-const config = {
-  apiUrl: 'http://localhost:5001/api'
-}
-
 export default {
   name: "User",
 
@@ -25,9 +23,8 @@ export default {
     };
 
     fetch(`http://localhost:5001/api/user/userById?name=${this.$route.params.id}`, requestOptions)
-        .then((resp) => {
-          console.log(`${ config.apiUrl }/user/userById`);
-          this.user = resp.json();
+        .then(async (resp) => {
+          this.user = await resp.json();
         });
   }
 }

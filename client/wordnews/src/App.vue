@@ -5,6 +5,7 @@
       color="primary"
       dark
     >
+      <a href="/" style="color: white; text-decoration: none">
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -15,8 +16,8 @@
           width="40"
         />
       <v-toolbar-title>World News</v-toolbar-title>
-
       </div>
+      </a>
 
       <v-spacer></v-spacer>
       <template v-if="user.status.loggedIn">
