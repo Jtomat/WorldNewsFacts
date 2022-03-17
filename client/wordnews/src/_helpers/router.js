@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import HelloWorld from '../components/HelloWorld'
+import Main from '../components/Main'
 import Login from '../components/Login'
 import Register from '../components/Register'
 
@@ -10,7 +10,7 @@ Vue.use(Router);
 export const router = new Router({
   mode: 'history',
   routes: [
-    { path: '/', component: HelloWorld },
+    { path: '/', component: Main },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
 
