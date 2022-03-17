@@ -59,8 +59,7 @@ class VoteController {
         return res.json(vote);
     }
 
-        async
-        deleteVote(req, res)
+        async deleteVote(req, res)
         {
             const { id } = req.body;
 
