@@ -48,7 +48,7 @@ class NewsController {
     async getAll(req, res) {
 
         const news = await News.findAll({
-            attributes: ['article', 'keyWords', 'preview']
+            attributes: ['article', 'keyWords', 'preview', 'text', 'id']
         });
 
         return res.json(news);
