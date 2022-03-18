@@ -16,7 +16,9 @@ app = Flask(__name__)
 def gen():
     length = int(request.args.get('len'))
     words = request.args.get('words')
-    return jsonify(newsGenerator.getNews(length, words))
+    if words != None:
+        return jsonify(newsGenerator.getNews(length, words))
+    return jsonify(newsGenerator.getNews(length))
 
 @app.route('/parse')
 def parse():
