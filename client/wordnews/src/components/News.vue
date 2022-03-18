@@ -44,25 +44,28 @@
                 {{ item.article }}
               </v-card-title>
               <v-card-text>{{ item.text }}</v-card-text>
-              <v-divider></v-divider>
-              <div style="text-align: center">
-                <v-btn
-                  text
-                  style="margin: 15px;"
-                  elevation="2"
-                  color="success"
-                  @click="dialog.value = false; vote(true, item.id)"
-                >Its a Fact!</v-btn>
-                <v-btn
-                  text
-                  elevation="2"
-                  style="margin: 15px;"
-                  color="error"
-                  @click="dialog.value = false; vote(false, item.id)"
-                >Its a Fake!</v-btn>
+              <div>
+                <v-divider></v-divider>
+                <div style="text-align: center">
+                  <v-btn
+                    text
+                    style="margin: 15px;"
+                    elevation="2"
+                    color="success"
+                    :disabled="checkIfAlreadyVoted(item.id)"
+                    @click="dialog.value = false; vote(true, item.id)"
+                  >Its a Fact!</v-btn>
+                  <v-btn
+                    text
+                    elevation="2"
+                    style="margin: 15px;"
+                    color="error"
+                    :disabled="checkIfAlreadyVoted(item.id)"
+                    @click="dialog.value = false; vote(false, item.id)"
+                  >Its a Fake!</v-btn>
+                </div>
+                <v-divider></v-divider>
               </div>
-              <v-divider></v-divider>
-
             <v-card-actions class="justify-end">
               <v-btn
                 text
@@ -91,7 +94,9 @@ export default {
   },
 
   created() {
+    const user = this.$store.state.authentication.user.name;
     this.$store.dispatch('news/getAll');
+    this.$store.dispatch('votes/votesForUser', {user});
     // re-calc on screen resize
     window.addEventListener('resize', () => {
         this.calcRowsPerPage()
@@ -102,6 +107,19 @@ export default {
     vote(result, news) {
       const user = this.$store.state.authentication.user.name;
       this.$store.dispatch('votes/vote', {user, result, proof: "proofs r 4 fags", news});
+      this.$store.dispatch('votes/votesForUser', {user});
+    },
+    checkIfAlreadyVoted(newsId) {
+      const currentVotes = this.$store.state.votes.all.votes;
+      let outism = false;
+      if (currentVotes && currentVotes.length) {
+        currentVotes.forEach(element => {
+          if (element.news_id == newsId) {
+            outism = true;
+          }
+        })
+      }
+      return outism;
     },
     getKeyWords(word) {
       let outism = '';

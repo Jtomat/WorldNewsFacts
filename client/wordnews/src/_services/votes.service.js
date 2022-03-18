@@ -4,7 +4,8 @@ const config = {
 }
 
 export const voteService = {
-    vote
+    vote,
+    votesForUser
 }
 
 function vote(name, result, proof, news) {
@@ -21,6 +22,23 @@ function vote(name, result, proof, news) {
                 localStorage.setItem('vote', JSON.stringify(vote));
             }
             return vote;
+        });
+
+}
+
+function votesForUser(name) {
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    };
+
+    return fetch(`${config.apiUrl}/vote/votesForUser?user=${name}`, requestOptions)
+        .then(handleResponse)
+        .then(votes => {
+            if (votes) {
+                localStorage.setItem('votes', JSON.stringify(votes));
+            }
+            return votes;
         });
 
 } 

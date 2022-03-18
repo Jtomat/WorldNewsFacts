@@ -10,17 +10,24 @@ export const votes = {
             commit('voteRequest');
             voteService.vote( user, result, proof, news)
                 .then(
-                    vote => commit('getAllSuccess', vote),
-                    error => commit('getAllFailure', error)
+                    error => commit('voteFailure', error)
                 );
+        },
+        votesForUser({commit}, {user}) {
+            commit('voteRequest')
+            voteService.votesForUser(user)
+            .then(
+                votes => commit('voteSuccess', votes),
+                error => commit('voteFailure', error)
+            );
         }
     },
     mutations: {
         voteRequest(state) {
             state.all = { loading: true };
         },
-        voteSuccess(state, news) {
-            state.all = { news };
+        voteSuccess(state, votes) {
+            state.all = { votes };
         },
         voteFailure(state, error) {
             state.all = { error };
