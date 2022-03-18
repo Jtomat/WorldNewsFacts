@@ -41,18 +41,6 @@
                 color="grey"
             ><v-img :src="item.preview"></v-img></v-list-item-avatar>
           </v-list-item>
-
-          <v-card-actions>
-            <v-btn
-                outlined
-                rounded
-                text
-                class="mt-4"
-                :href="'/news/' + item.id"
-            >
-              Read more
-            </v-btn>
-          </v-card-actions>
         </v-card>
 
         <v-btn
@@ -77,7 +65,7 @@ export default {
 
   data() {
     return {
-      amount: 3
+      amount: 2
     }
   },
 
