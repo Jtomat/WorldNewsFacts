@@ -1,4 +1,4 @@
-const { News } = require("../models/models");
+const { News, Vote } = require("../models/models");
 const axios = require('axios');
 
 class NewsController {
@@ -43,6 +43,25 @@ class NewsController {
         const news = await News.findByPk(id);
         await news.destroy;
         return res.json(id);
+    }
+
+    async newsStats (req, res) {
+        const id = req.query.id;
+        const pos = await Vote.count({
+            where: {
+                news_id: id,
+                result: true
+            },
+        });
+
+        const neg = await Vote.count({
+            where: {
+                news_id: id,
+                result: false
+            },
+        });
+
+        return res.json({pos, neg});
     }
 
     async getAll(req, res) {
