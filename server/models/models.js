@@ -11,9 +11,9 @@ const User = sequelize.define('user', {
 });
 
 const News = sequelize.define('news', {
-    article: { type: DataTypes.STRING },
+    article: { type: DataTypes.TEXT },
     keyWords: { type: DataTypes.JSON },
-    preview: { type: DataTypes.STRING },
+    preview: { type: DataTypes.TEXT },
     text: { type: DataTypes.TEXT },
     legit: { type: DataTypes.BOOLEAN }
 });
