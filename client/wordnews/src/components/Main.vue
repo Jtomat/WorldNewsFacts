@@ -51,7 +51,7 @@
             @click="gotoNews()"
             v-if="amount < news.length"
         >
-          Get more news
+          Start digging
         </v-btn>
 
       </v-col>

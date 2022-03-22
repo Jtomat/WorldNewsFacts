@@ -7,7 +7,10 @@
         :cols="(12/itemsPerRow)"
         class="py-2"
       > 
-        <v-card class="card fill-height mx-auto" >
+      <v-hover v-slot="{ hover }">
+        <v-card class="card fill-height mx-auto"
+          :elevation="hover ? 12 : 2"
+          :class="{ 'on-hover': hover }">
           <v-img
             class="white--text align-end"
             height="200px"
@@ -53,7 +56,7 @@
                     elevation="2"
                     color="success"
                     :disabled="checkIfAlreadyVoted(item.id)"
-                    @click="dialog.value = false; vote(true, item.id)"
+                    @click="vote(true, item.id)"
                   >Its a Fact!</v-btn>
                   <v-btn
                     text
@@ -61,10 +64,25 @@
                     style="margin: 15px;"
                     color="error"
                     :disabled="checkIfAlreadyVoted(item.id)"
-                    @click="dialog.value = false; vote(false, item.id)"
+                    @click="vote(false, item.id)"
                   >Its a Fake!</v-btn>
                 </div>
-                <v-divider></v-divider>
+                <v-alert
+                  dense
+                  text
+                  type="success"
+                  v-if="checkIfAlreadyVoted(item.id) && checkIfvotedCorrectly(item.id)"
+                >
+                You are <strong>correct</strong>, this is <strong>{{getVoteById(item.id) ? 'legit': 'fake'}}</strong>!
+                </v-alert>
+               <v-alert
+                  dense
+                  text
+                  type="error"
+                  v-if="checkIfAlreadyVoted(item.id) && !checkIfvotedCorrectly(item.id)"
+                >
+                You are <strong>wrong</strong>, this is <strong>{{getLegitById(item.id) ? 'legit': 'fake'}}</strong>!
+                </v-alert>
               </div>
             <v-card-actions class="justify-end">
               <v-btn
@@ -72,12 +90,15 @@
                 @click="dialog.value = false"
               >Close</v-btn>
             </v-card-actions>
+            
         </v-card>
+
         </template>
       </v-dialog>
 
           </v-card-actions>
         </v-card>
+                </v-hover>
       </v-col>
     </v-row>
   </v-container>
@@ -116,6 +137,50 @@ export default {
         currentVotes.forEach(element => {
           if (element.news_id == newsId) {
             outism = true;
+          }
+        })
+      }
+      return outism;
+    },
+    checkIfvotedCorrectly(newsId) {
+      const currentVotes = this.$store.state.votes.all.votes;
+      const currentNews = this.$store.state.news.all.news;
+      let currentVote;
+      let outism = false;
+      if (currentVotes && currentVotes.length) {
+        currentVotes.forEach(element => {
+          if (element.news_id == newsId) {
+          currentVote = element.result;
+          }
+        });
+        currentNews.forEach( element => {
+          if(element.id == newsId) {
+            outism = currentVote == element.legit;
+          }
+        })
+      }
+      return outism;
+    },
+    getVoteById(newsId) {
+            const currentVotes = this.$store.state.votes.all.votes;
+      let outism = false;
+      if (currentVotes && currentVotes.length) {
+        currentVotes.forEach(element => {
+          if (element.news_id == newsId) {
+            outism = element.result;
+          }
+        })
+      }
+      return outism;
+    },
+    getLegitById(newsId) {
+      const currentVotes = this.$store.state.votes.all.votes;
+      const currentNews = this.$store.state.news.all.news;
+      let outism = false;
+      if (currentVotes && currentVotes.length) {
+        currentNews.forEach( element => {
+          if(element.id == newsId) {
+            outism = element.legit;
           }
         })
       }
