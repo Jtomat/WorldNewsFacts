@@ -48,7 +48,9 @@ class VoteController {
 
         const newsInstance = await News.findOne({ where: { id: news } });
 
-        if (result === newsInstance.legit) {
+        const guessedRight = result === newsInstance.legit;
+
+        if (guessedRight) {
             await User.update({ correct: userInstance.correct + 1 }, {
                 where: {
                     email: user
@@ -56,7 +58,7 @@ class VoteController {
             });
         }
 
-        return res.json(vote);
+        return res.json({votedFor: result, guessedRight});
     }
 
     async deleteVote(req, res) {
