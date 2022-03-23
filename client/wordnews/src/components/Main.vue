@@ -17,12 +17,17 @@
           class="mb-5"
           cols="12"
       >
+        <h1 class="display-1 font-weight-bold mb-3">
+          Featured news
+        </h1>
+
         <v-card
           v-for="item in news.slice(0, amount)" 
           :key="item.article" 
           elevation="2"
           outlined
           class="mx-auto"
+          @click="$router.push('/news');"
           style="margin-top: 20px;">
           <v-list-item three-line >
             <v-list-item-content>
@@ -61,7 +66,7 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Main',
 
   data() {
     return {
