@@ -41,7 +41,7 @@
           outlined
           class="mx-auto"
           style="margin-top: 20px;">
-              <v-img class="white--text align-end" height="200px" :src="item.preview">              
+              <v-img class="white--text align-end" height="100px" :src="item.preview">              
                 <v-card-title class="text-overline">{{ getKeyWords(item.keyWords) }}</v-card-title>
               </v-img>
               <v-card-title class="text-h5 mb-1">
