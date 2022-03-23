@@ -31,6 +31,7 @@
             color="primary"
             v-bind="attrs"
             v-on="on"
+            @click="getStatsById(item.id)"
           >Read more</v-btn>
         </template>
         <template v-slot:default="dialog">
@@ -47,7 +48,7 @@
                 {{ item.article }}
               </v-card-title>
               <v-card-text>{{ item.text }}</v-card-text>
-              <div>
+              <div >
                 <v-divider></v-divider>
                 <div style="text-align: center">
                   <v-btn
@@ -72,6 +73,7 @@
                   text
                   type="success"
                   v-if="checkIfAlreadyVoted(item.id) && checkIfvotedCorrectly(item.id)"
+                                    style="text-align: center"
                 >
                 You are <strong>correct</strong>, this is <strong>{{getVoteById(item.id) ? 'legit': 'fake'}}</strong>!
                 </v-alert>
@@ -80,9 +82,37 @@
                   text
                   type="error"
                   v-if="checkIfAlreadyVoted(item.id) && !checkIfvotedCorrectly(item.id)"
+                  style="text-align: center"
                 >
                 You are <strong>wrong</strong>, this is <strong>{{getLegitById(item.id) ? 'legit': 'fake'}}</strong>!
                 </v-alert>
+              </div>
+              <div class="mx-auto" style="display: flex; justify-content: space-evenly;">
+                <div>
+                  <v-progress-circular
+                      style="margin: 30px;"
+                      :rotate="360"
+                      :size="100"
+                      :width="15"
+                      :value="((stats.neg*100)/(stats.pos+stats.neg)) || 0"
+                      color="green"
+                  >
+                    {{ Math.round((stats.neg * 100) / (stats.pos+stats.neg)) || 0 }}%
+                  </v-progress-circular>
+                  <span>Верно голосов</span>
+                </div>
+                <div>
+                  <v-progress-circular
+                      style="margin: 30px; margin-right: 7px;"
+                      :size="100"
+                      :width="15"
+                      :value="(((stats.pos)*100)/(stats.pos+stats.neg)) || 0"
+                      color="red"
+                  >
+                    {{ Math.round(((stats.pos) * 100) / (stats.pos+stats.neg)) || 0 }}%
+                  </v-progress-circular>
+                  <span>Неверно голосов</span>
+                </div>
               </div>
             <v-card-actions class="justify-end">
               <v-btn
@@ -106,11 +136,12 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'News',
 
   data() {
     return {
-      amount: 3
+      amount: 3,
+      stats: {}
     }
   },
 
@@ -129,6 +160,8 @@ export default {
       const user = this.$store.state.authentication.user.name;
       this.$store.dispatch('votes/vote', {user, result, proof: "proofs r 4 fags", news});
       this.$store.dispatch('votes/votesForUser', {user});
+      this.getStatsById(news);
+      this.$emit('voted');
     },
     checkIfAlreadyVoted(newsId) {
       const currentVotes = this.$store.state.votes.all.votes;
@@ -162,7 +195,7 @@ export default {
       return outism;
     },
     getVoteById(newsId) {
-            const currentVotes = this.$store.state.votes.all.votes;
+      const currentVotes = this.$store.state.votes.all.votes;
       let outism = false;
       if (currentVotes && currentVotes.length) {
         currentVotes.forEach(element => {
@@ -185,6 +218,17 @@ export default {
         })
       }
       return outism;
+    },
+    getStatsById(newsId) {
+      const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      };
+
+      fetch(`http://localhost:5001/api/news/get/newsStats?id=${ newsId }`, requestOptions)
+        .then(async (resp) => {
+          this.stats = await resp.json();
+        });
     },
     getKeyWords(word) {
       let outism = '';

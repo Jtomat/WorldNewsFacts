@@ -3,7 +3,8 @@ import { voteService } from '../_services';
 export const votes = {
     namespaced: true,
     state: {
-        all: {}
+        all: {},
+        current: {}
     },
     actions: {
         vote({commit}, { user, result, proof, news }) {
@@ -14,22 +15,31 @@ export const votes = {
                 );
         },
         votesForUser({commit}, {user}) {
-            commit('voteRequest')
+            commit('currentVoteRequest')
             voteService.votesForUser(user)
             .then(
-                votes => commit('voteSuccess', votes),
-                error => commit('voteFailure', error)
+                votes => commit('getVoteSuccess', votes),
+                error => commit('getVoteFailure', error)
             );
         }
     },
     mutations: {
         voteRequest(state) {
-            state.all = { loading: true };
+            state.current = { loading: true };
         },
         voteSuccess(state, votes) {
-            state.all = { votes };
+            state.current = { votes };
         },
         voteFailure(state, error) {
+            state.current = { error };
+        },
+        getVoteRequest(state) {
+            state.all = { loading: true };
+        },
+        getVoteSuccess(state, votes) {
+            state.all = { votes };
+        },
+        getVoteFailure(state, error) {
             state.all = { error };
         }
     }
